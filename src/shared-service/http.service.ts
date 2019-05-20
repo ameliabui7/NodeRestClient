@@ -6,7 +6,7 @@ import { environment } from '../environments/environment';
   providedIn: 'root'
 })
 export class HttpService {
-  apiURL = ''; // http://localhost:3002/api/v1
+  apiURL = '';
   constructor(
     private http: Http
   ) {
@@ -14,32 +14,35 @@ export class HttpService {
   }
 
   testing() {
-    console.log('from http service testing........');
+
   }
 
-  // get('car');
+
   async get(path: string) {
     const resp = await this.http.get(this.apiURL + path, this.headers).toPromise();
-    console.log('resp from http service get() resp:', resp.json());
-    return resp.json();
-  }
-  // post('car', { make: 'Nissan', model: '350z'});
-  async post(path: string, payload: any) {
-    const resp = await this.http.post(this.apiURL + path, payload, this.headers).toPromise();
-    console.log('from http service post() resp:', resp.json());
     return resp.json();
   }
 
-  // put('car/id/1', { make: 'Toytoa' model: 'Celica});
+  async post(path: string, payload: any) {
+    const resp = await this.http.post(this.apiURL + path, payload, this.headers).toPromise();
+    return resp.json();
+  }
+
   async put(path: string, payload: any) {
     const resp = await this.http.put(this.apiURL + path, payload, this.headers).toPromise();
-    console.log('from http service put()', resp.json());
     return resp.json();
   }
 
   async delete(path: string, payload: any) {
     const resp = await this.http.delete(this.apiURL + path, payload, this.headers).toPromise();
-    console.log('from http service put()', resp.json());
+    return resp.json();
+  }
+
+  async logout() {
+    const resp: any = await this.http.get(this.apiURL + 'user/logout', this.headers).toPromise();
+    if (resp.statusCode === 200) {
+      localStorage.removeItem('id_token');
+    }
     return resp.json();
   }
 
